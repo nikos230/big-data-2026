@@ -25,16 +25,18 @@ for file in fileNames:
     extension = file.split('.')[1]
 
     if file_name == "LA_income_2021":
-        df = spark.read.csv(f"/home/nikos/bigdata-dsml/data/{file_name}.{extension}", 
-                            header=True, 
-                            inferSchema=True,
-                            sep=';')
-    else:    
-        df = spark.read.csv(f"/home/nikos/bigdata-dsml/data/{file_name}.{extension}", 
-                            header=True, 
-                            inferSchema=True,
-                            sep=',')
-    
-    df.write.mode("overwrite").parquet(f"/home/nikos/bigdata-dsml/data_parquet/{file_name}.parquet")
+        df = spark.read.csv(f"hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/dsml00283/data/{file_name}.{extension}", 
+                    header=True, 
+                    inferSchema=True,
+                    sep=';')
+    else:
+        df = spark.read.csv(f"hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/dsml00283/data/{file_name}.{extension}", 
+                    header=True, 
+                    inferSchema=True,
+                    sep=',')
+
+
+
+    df.write.mode("overwrite").parquet(f"hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/dsml00283/data_parquet/{file_name}.parquet")
 
     print(f"File: {file} done converting!")
