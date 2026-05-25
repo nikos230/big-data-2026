@@ -1,0 +1,4 @@
+\babel@toc {greek}{}\relax 
+\contentsline {section}{Εισαγωγή}{2}{section*.3}%
+\contentsline {section}{Ζητούμενο 1}{2}{section*.5}%
+\contentsline {section}{Ζητούμενο 2}{3}{section*.7}%
