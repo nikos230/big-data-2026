@@ -1,4 +1,7 @@
 \babel@toc {greek}{}\relax 
 \contentsline {section}{Εισαγωγή}{2}{section*.3}%
 \contentsline {section}{Ζητούμενο 1}{2}{section*.5}%
-\contentsline {section}{Ζητούμενο 2}{3}{section*.7}%
+\contentsline {subsection}{Ζητούμενο 2 (DataFrame, χωρίς UDF)}{3}{section*.7}%
+\contentsline {subsection}{Ζητούμενο 2 (DataFrame, με UDF)}{3}{section*.9}%
+\contentsline {subsection}{Ζητούμενο 2 (RDD)}{4}{section*.11}%
+\contentsline {subsection}{Ζητούμενο 2 Αποτελέσματα}{4}{section*.13}%

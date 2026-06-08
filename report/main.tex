@@ -120,13 +120,420 @@ file, chunk και page.
 \newpage
 
 \phantomsection
-\section*{Ζητούμενο 2}
-\addcontentsline{toc}{section}{Ζητούμενο 2}
-Στο ζητούμενο 2 θα δημιουργηθούν 3 υλοποιήσεις για το ίδιο Query όπου στην
-πρώτη θα χρησιμοποιεί μονό DataFrame χωρίς User Defined Function (UDF), έπειτα
-θα υλοποιηθεί ξανά με UDF και τέλος θα γίνει μια υλοποίηση με Resilient 
-Distributed Dataset (RDD). Για ολα τα υπο ερωτήματα τα Crime Data συγχωνευτήκαν σε ενα
-ενιαίο αρχείο .csv και .parquet για την ευκολότερη διαχείριση τους.
+\subsection*{Ζητούμενο 2 (DataFrame, χωρίς UDF)}
+\addcontentsline{toc}{subsection}{Ζητούμενο 2 (DataFrame, χωρίς UDF)}
+
+Ξεκινώντας απο το αρχείο DFQ1.py που μας δόθηκε στον οδηγό της εργασίας χρησιμοποιήθηκε σαν
+template. Φορτώνονται τα δεδομένα με την μέθοδό \texttt{spark.read.parquet(args.crimes\_path)}
+αφού πρόκειται για δεδομένα της μορφής spark. Έπειτα γίνετε filter της στήλης \texttt{"Premis Desc"}
+και παρθήκαν οι τιμές ίσες με \texttt{"STREET"}. Στη συνεχεία υπολογίζεται ο αριθμός των συνολικών
+Crimes για τον υπολογισμό του ποσοστού. 
+
+Πριν την εκτέλεση του κώδικα που κάνει το φιλτράρισμα για τις ώρες μέσα στην μέρα εκκήνηθηκε
+ένας \texttt{perf\_counter} για την χρονομέτρηση των αποτελεσμάτων, έπειτα εκτελέστηκε ο κώδικας
+όπου για κάποιες τιμές της στήλης \texttt{"TIME OCC"} τις κατηγοριοποιούμε σε Πρωί, 
+Απόγευμα, Βραδύ και Νύχτα με την μέθοδο \texttt{.withColumn}, η κατηγοριοποίηση έγινε
+συμφωνά με τον πίνακα \ref{time_category}
+
+Έπειτα δημιουργείται μια νεα στήλη με όνομα \texttt{Day\_Part} και κάνουμε groupBy 
+της κατηγορίες και για κάθε κατηγορία μετρήθηκε ο αριθμός των Crimes και διαιρέθηκε 
+με τον συνολικό αριθμό για να προκύψει το ποσοστό. 
+
+Τέλος εκτυπώνουμε τα αποτελέσματα, σταματάμε τον perf\_counter
+και υπολογίζουμε τον χρόνο εκτέλεσης. Ο perf\_counter πρέπει να σταματήσει
+μετά το \texttt{.show()} καθώς ολα τα προηγούμενα είναι με lazy loading και
+αρα δεν έχουν εκτελεστεί ακόμη. 
+% Ο κώδικας παρουσιάζεται στο listing \ref{dataframe_no_udf}
+
+% \begin{lstlisting}[language=python, 
+%                     showstringspaces=false, 
+%                     frame=single, 
+%                     lineskip=-1pt, 
+%                     breaklines=true, 
+%                     basicstyle=\ttfamily\small, 
+%                     caption={Η υλοποίηση για το DataFrame, χωρίς UDF (Q1\_DF\_without\_UDF.py)}, 
+%                     captionpos=b, 
+%                     label={dataframe_without_udf}]
+% dataFrame = spark.read.parquet(args.crimes_path)
+% street_crimes = dataFrame.filter(col("Premis Desc") == "STREET") 
+% total_street_crimes = street_crimes.count()
+% start_time = perf_counter()
+% df_no_udf = street_crimes.withColumn(
+%     'Day_Part',
+%     when((col("TIME OCC") >= 500) & (col("TIME OCC") <= 1159), "Prwi")
+%     .when((col("TIME OCC") >= 1200) & (col("TIME OCC") <= 1659), "Apogeuma")
+%     .when((col("TIME OCC") >= 1700) & (col("TIME OCC") <= 2059), "Vradi")
+%     .otherwise("Nixta") 
+% )
+% end_time = perf_counter()
+% result_without_udf = (
+% df_no_udf.groupBy("Day_Part")
+% .count()  
+% .withColumnRenamed("count", "Crime_Count")
+% .withColumn("Percentage", round((col("Crime_Count") / total_street_crimes) * 100, 2))
+% .orderBy(col("Percentage").desc())
+% )
+% result_without_udf.show()
+% end_time = perf_counter()
+% \end{lstlisting}
+
+
+% Ολα τα παραπάνω υλοποιήθηκαν στο script \texttt{Q1\_DF\_without\_UDF.py} το οποίο αναπτύχθηκε
+% τοπικά και όταν, πλέον, έτρεχε χωρίς προβλήματα υποβλήθηκε στο απομακρυσμένο server για 
+% εκτέλεση μεσώ των εντολών που μας δόθηκαν στον οδηγό της εργασίας. Πιο συγκεκριμένα 
+
+Το αρχείο ανέβηκε στον server μέσο της εντολής στο listing \ref{upload_to_server}, και εκτελέστηκε 
+με την εντολή στο listing \ref{submit_to_spark}.
+
+
+\begin{lstlisting}[language=bash, 
+                    breaklines=true, 
+                    showstringspaces=false,
+                    basicstyle=\ttfamily\small, 
+                    frame=single, 
+                    lineskip=-1pt,
+                    captionpos=b, 
+                    caption={Μεταφορά script στον server},
+                    label={upload_to_server}]
+hdfs dfs -put -f /home/nikos/bigdata-dsml/code_nikos/Q1_DF_without_UDF.py /user/dsml00283/code_nikos/Q1_DF_without_UDF.py
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash, 
+                    breaklines=true, 
+                    showstringspaces=false,
+                    basicstyle=\ttfamily\small, 
+                    frame=single, 
+                    lineskip=-1pt,
+                    captionpos=b, 
+                    caption={Υποβολή script στο Spark},
+                    label={submit_to_spark}]
+spark-submit --conf spark.executor.cores=1 --conf spark.executor.memory=2g --conf spark.executor.instances=2 hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$DSML_USER/code_nikos/Q1_DF_without_UDF.py --crimes-path hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$DSML_USER/data_parquet/LA_Crime_Data_combined.parquet   --base-path hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$DSML_USER \end{lstlisting}
+
+
+
+
+
+\phantomsection
+\subsection*{Ζητούμενο 2 (DataFrame, με UDF)}
+\addcontentsline{toc}{subsection}{Ζητούμενο 2 (DataFrame, με UDF)}
+
+Αρχικά φορτώνονται τα δεδομένα και φιλτράρονται οι τιμές της στήλης \texttt{"Premis Desc"}
+όπως και παραπάνω. Έπειτα ορίζεται η συνάρτηση \texttt{get\_day\_part} η οποία περνάει
+σαν όρισμα την τιμή TIME\_OCC με την οποία όπως και παραπάνω κατηγοριοποιούμε τις
+ώρες μέσα στην ημέρα, η συνάρτηση δέχεται σαν όρισμα μια τιμή time\_occ και επιστέφει
+την κατηγορία στην οποία ανήκει εκείνη η στιγμή μέσα στην μέρα, σύμφωνα με τον πίνακα \ref{time_category}.
+
+Ξεκινάμε τον perf\_counter και έπειτα με την μέθοδο \texttt{udf()} ορίζουμε την 
+συνάρτηση σαν udf, και με την μέθοδο \texttt{.withColumn()} την εφαρμόζουμε 
+στην νεα στήλη "Day\_Part". Έπειτα κάνουμε groupBy και μετράμε τα εγκλήματα ανα 
+κατηγορία και διαιρούμε με τα συνολικά εγκλήματα και τέλος σταματάμε τον perf\_counter
+αμέσως μετά το \texttt{.show()}. Στην συνέχεια μεταφέρθηκε το script 
+στον server και εκτελέστηκε.
+
+% \begin{lstlisting}[language=python, 
+%                     breaklines=true, 
+%                     showstringspaces=false,
+%                     frame=single, 
+%                     lineskip=-1pt, 
+%                     basicstyle=\ttfamily\small, 
+%                     caption={Η υλοποίηση για το DataFrame, με UDF (Q1\_DF\_with\_UDF.py)}, 
+%                     captionpos=b, 
+%                     label={dataframe_with_udf}]
+% dataFrame = spark.read.parquet(args.crimes_path)
+% street_crimes = dataFrame.filter(col("Premis Desc") == "STREET") 
+% total_street_crimes = street_crimes.count()
+
+% def get_day_part(time_occ):
+%     time_occ = int(time_occ)
+%     if 500 <= time_occ <= 1159:
+%         return "Prwi"
+%     elif 1200 <= time_occ <= 1659:
+%         return "Apogeuma" 
+%     elif 1700 <= time_occ <= 2059:
+%         return "Vradi"
+%     else:
+%         return "Nixta"
+
+% start_time = perf_counter()
+% day_part_udf = udf(get_day_part, StringType())
+% df_with_udf = street_crimes.withColumn("Day_Part", day_part_udf(col("TIME OCC")))
+% result_with_udf = (
+% df_with_udf.groupBy("Day_Part")
+% .count()  
+% .withColumnRenamed("count", "Crime_Count")
+% .withColumn("Percentage", round((col("Crime_Count") / total_street_crimes) * 100, 2))
+% .orderBy(col("Percentage").desc())
+% )       
+% result_with_udf.show()
+% end_time = perf_counter()
+% \end{lstlisting}
+
+
+
+
+
+\phantomsection
+\subsection*{Ζητούμενο 2 (RDD)}
+\addcontentsline{toc}{subsection}{Ζητούμενο 2 (RDD)}
+
+Αρχικά φορτώνονται τα δεδομένα και φιλτράρονται οι τιμές της στήλης \texttt{"Premis Desc"}
+όπως και παραπάνω. Έπειτα ορίζετε η συνάρτηση \texttt{get\_day\_part} η οποία δέχεται σαν
+όρισμα μια γραμμή απο το DataFrame και απο αυτή την γραμμή φιλτράρετε η στήλη "TIME OCC",
+στη συνέχεια, όπως και παραπάνω, ανάλογα με την ωρα τη ημέρας γίνετε η κατηγοριοποίηση συμφωνά
+με τον πίνακα \ref{time_category}. Οι υλοποιήσεις εκτελέστηκαν με 2 executors (1 core, 2GB memory).
+
+Έπειτα ξεκινάμε το perf\_counter και κάνουμε map με την βοήθεια της συνάρτησης 
+\texttt{get\_day\_part}. Στη πράξη η συνάρτηση θα πάει σε κάθε γραμμή του RDD και
+θα φτιάξει ζεύγη (key, value) που στην περίπτωση μας θα είναι π.χ (Prwi, 1).
+
+
+Μετά το map κάνουμε \texttt{reduceByKey(lambda a, b: a + b)}
+το οποίο κάνει group ολα τα ιδία keys π.χ ολα τα "Prwi" μεταξύ τους, αρα θα έχουμε
+κάτι σαν (Prwi: 1, 1, 1, , etc,..) και έπειτα το
+lambda πάει σε κάθε group (key, value) και στο τρέχων άθροισμα \texttt{a} προσθέτει
+την επόμενη τιμή \texttt{b}. Αρα μετράμε πόσες τιμές έχει το κάθε group.
+
+Στη συνέχεια κάνουμε ακόμη ενα map στα δεδομένα του προηγούμενου αποτελέσματος που είναι πλέον
+("Prwi", 10), ("Apogeuma", 12), κτλ,.. (οι τιμές 10 και 12 είναι ενδεικτικές) και για την δεύτερη
+τιμή που είναι ο αριθμός των εγκλημάτων σε κάθε κατηγορία της μέρας τον διαιρούμε με τον συνολικό
+αριθμό εγκλημάτων για να υπολογιστεί το ποσοστό και επιπλέον κάνουμε sort με φθίνουσα σειρά,
+σταματάμε το perf\_counter και εκτυπώνουμε τα αποτελέσματα. Η διαδικασία αυτή μπορεί να γίνει
+με την μέθοδο lambda x: (x[0], x[1], round((x[1] \/ total\_street\_crimes) * 100, 2)), όπου
+x είναι όλες οι κατηγορίες ("Prwi", "Apogeuma", "Vradi", "Nixta") και x[0] είναι η κάθε κατηγορία
+απο τις 4 ενω x[1] είναι η τιμή count. Για την τιμή αυτή την διαιρούμε και κρατάμε 2 δεκαδικά. Τέλος
+εκτελείτε άλλη μια μέθοδος lambda x: x[2], ascending=False όπου τώρα εκτελείτε ενα sorting με βάση
+την τιμή count κατά φθίνουσα σειρά. 
+
+% \begin{lstlisting}[language=python, 
+%                     breaklines=true, 
+%                     showstringspaces=false,
+%                     frame=single, 
+%                     lineskip=-1pt, 
+%                     basicstyle=\ttfamily\small, 
+%                     caption={Η υλοποίηση για το RDD, (Q1\_RDD.py)}, 
+%                     captionpos=b, 
+%                     label={dataframe_rdd}]
+% dataFrame = spark.read.parquet(args.crimes_path)
+% street_crimes = dataFrame.filter(col("Premis Desc") == "STREET").rdd
+% total_street_crimes = street_crimes.count()
+
+% def get_day_part(row):
+%     time_occ = int(row["TIME OCC"])
+%     if 500 <= time_occ <= 1159:
+%         return ("Prwi", 1)
+%     elif 1200 <= time_occ <= 1659:
+%         return ("Apogeuma", 1) 
+%     elif 1700 <= time_occ <= 2059:
+%         return ("Vradi", 1)
+%     else:
+%         return ("Nixta", 1)
+
+% start_time = perf_counter()
+% counts = street_crimes.map(get_day_part).reduceByKey(lambda a, b: a + b)    
+% rdd_results = counts.map(lambda x: (x[0], x[1], round((x[1] / total_street_crimes) * 100, 2))).sortBy(lambda x: x[2], ascending=False).collect()
+% end_time = perf_counter()
+% \end{lstlisting}
+
+
+\phantomsection
+\subsection*{Ζητούμενο 2 Αποτελέσματα}
+\addcontentsline{toc}{subsection}{Ζητούμενο 2 Αποτελέσματα}
+
+Παρακάτω παρουσιάζονται τα αποτέλεσμα για την κάθε υλοποίηση όπως παρουσιαστήκαν παραπάνω.
+Αρχικά στον πίνακα \ref{time_category} παρουσιάζονται οι κατηγορίες ανα ωρα μέρας που επιλέχθηκαν
+και εφαρμόστηκαν και στις 3 υλοποίησες.
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ccc} 
+
+Time Start & Time End & Category \\ 
+\hline
+500 & 1159 &  Prwi \\ 
+1200 & 1659 & Apogeuma \\
+1700 & 2059 &  Vradi \\
+otherwise & - &  Nixta \\
+\hline
+
+\end{tabular}
+\caption{Ταξινόμηση ώρας σε κατηγορίες.}
+\label{time_category}
+\end{table}
+
+Στη συνέχεια, στον πίνακα \ref{q1_results} παρουσιάζεται το αποτέλεσμα του Query 1, το
+οποίο είναι ίδιο και για τις 3 υλοποιήσεις. Φαίνεται το μεγαλύτερο ποσοστό εγκλημάτων στον
+δρόμο "STREET" να εμφανίζεται την Νύχτα με ποσοστό 43.08\% ενω το δέυτερο μεγαλύτερο
+το Βραδύ με ποσοστό 26.92\%, δηλαδή με διάφορα 7.16\% απο το πρώτο. Στη συνέχεια το
+Απόγευμα παρουσιάζει ποσοστό 21.23\% και τέλος το Πρωί εμφανίζει ποσοστό 17.76\%.
+
+% parquet
+% RDD
+% Time elapsed: 10.6075 seconds
+% Day_Part, Crime_Count, Percentage (%)
+% Nixta, 251094, 34.08
+% Vradi, 198292, 26.92
+% Apogeuma, 156432, 21.23
+% Prwi, 130866, 17.76
+% q1-rdd-py-5107949e3b526971-driver
+
+% Q1 without UDF
+% +--------+-----------+----------+
+% |Day_Part|Crime_Count|Percentage|
+% +--------+-----------+----------+
+% |   Nixta|     251094|     34.08|
+% |   Vradi|     198292|     26.92|
+% |Apogeuma|     156432|     21.23|
+% |    Prwi|     130866|     17.76|
+% +--------+-----------+----------+
+% Time elapsed: 4.2034 seconds
+% q1-df-without-udf-py-98098d9e3ee1b706-driver
+
+% Q1 with UDF
+% +--------+-----------+----------+
+% |Day_Part|Crime_Count|Percentage|
+% +--------+-----------+----------+
+% |   Nixta|     251094|     34.08|
+% |   Vradi|     198292|     26.92|
+% |Apogeuma|     156432|     21.23|
+% |    Prwi|     130866|     17.76|
+% +--------+-----------+----------+
+% Time elapsed: 6.1014 seconds
+% q1-df-with-udf-py-5dc85e9e3ee36aa7-driver
+
+
+% csv
+% RDD
+% Time elapsed: 27.5870 seconds
+% Day_Part, Crime_Count, Percentage (%)
+% Nixta, 251094, 34.08
+% Vradi, 198292, 26.92
+% Apogeuma, 156432, 21.23
+% Prwi, 130866, 17.76
+% q1-rdd-csv-py-34b61e9e3b6f1b23-driver
+
+% Q1 without UDF
+% +--------+-----------+----------+
+% |Day_Part|Crime_Count|Percentage|
+% +--------+-----------+----------+
+% |   Nixta|     251094|     34.08|
+% |   Vradi|     198292|     26.92|
+% |Apogeuma|     156432|     21.23|
+% |    Prwi|     130866|     17.76|
+% +--------+-----------+----------+
+% Time elapsed: 46.2366 seconds
+% q1-df-without-udf-csv-py-af46eb9e3ee9a2d6-driver
+
+% Q1 with UDF
+% +--------+-----------+----------+
+% |Day_Part|Crime_Count|Percentage|
+% +--------+-----------+----------+
+% |   Nixta|     251094|     34.08|
+% |   Vradi|     198292|     26.92|
+% |Apogeuma|     156432|     21.23|
+% |    Prwi|     130866|     17.76|
+% +--------+-----------+----------+
+% Time elapsed: 31.7454 seconds
+% q1-df-with-udf-csv-py-581aa29e3eed3b3f-driver
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ccc} 
+
+Day\_Part & Crime\_Count & Percentage \\ 
+\hline
+Nixta    & 251094 &  34.08 \\ 
+Vradi    & 198292 &  26.92 \\
+Apogeuma & 156432 &  21.23 \\
+Prwi     & 130866 &  17.76 \\
+\hline
+\end{tabular}
+\caption{Αποτελέσματα Query 1.}
+\label{q1_results}
+\end{table}
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcc} 
+
+Υλοποίηση & Χρόνος Εκτέλεσης (seconds) \\ 
+\hline
+DataFrame, without UDF &  4.2034 \\
+DataFrame, with UDF    &  6.1014 \\
+DataFrame, RDD         &  10.6075 \\
+
+\hline
+\multicolumn{2}{c}{2 executors (1 core, 2GB memory)}
+\end{tabular}
+\caption{Αποτελέσματα Query 1 με DataFrame με UDF, χωρίς UDF και με RDD (parquet).}
+\label{q1_results_all_parquet}
+\end{table}
+
+\newpage
+Τα αποτελέσματα του πίνακα \ref{q1_results_all_parquet} μπορούν να βρεθούν και στον server
+με τα παρακάτω drive pod names: 
+
+\begin{itemize}
+\item DataFrame, without UDF: q1-df-without-udf-py-98098d9e3ee1b706-driver
+\item DataFrame, with UDF: q1-df-with-udf-py-5dc85e9e3ee36aa7-driver
+\item DataFrame, RDD: q1-rdd-py-5107949e3b526971-driver
+\end{itemize}
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcc} 
+\hline
+Υλοποίηση & Χρόνος Εκτέλεσης (seconds) \\ 
+\hline
+DataFrame, without UDF &  46.2366 \\
+DataFrame, with UDF    &  31.7454 \\
+DataFrame, RDD         &  27.5870 \\
+
+\hline
+\multicolumn{2}{c}{2 executors (1 core, 2GB memory)}
+\end{tabular}
+\caption{Αποτελέσματα Query 1 με DataFrame με UDF, χωρίς UDF και με RDD (csv).}
+\label{q1_results_all_csv}
+\end{table}
+
+
+Τα αποτελέσματα του πίνακα \ref{q1_results_all_csv} μπορούν να βρεθούν και στον server
+με τα παρακάτω drive pod names: 
+
+\begin{itemize}
+\item DataFrame, without UDF: q1-df-without-udf-csv-py-af46eb9e3ee9a2d6-driver
+\item DataFrame, with UDF: q1-df-with-udf-csv-py-581aa29e3eed3b3f-driver
+\item DataFrame, RDD: q1-rdd-csv-py-34b61e9e3b6f1b23-driver
+\end{itemize}
+
+Απο τα παραπάνω αποτελέσματα, στους πίνακες \ref{q1_results_all_parquet} και \ref{q1_results_all_csv}
+γίνονται 2 συγκρίσεις. Αρχικά συγκρίνονται οι χρόνοι εκτέλεσης μεταξύ των διαφορετικών
+υλοποιήσεων στον πίνακα \ref{q1_results_all_parquet}, DataFrame with UDF, 
+DataFrame without UDF και RDD, όπου η υλοποίηση DataFrame, without UDF έχει 
+τον μικρότερο χρόνο εκτέλεσης έπειτα είναι DataFrame, with UDF και τέλος 
+η υλοποίηση με το RDD. Η τελευταία φαίνεται να έχει μεγαλύτερη διαφορά 
+απο τις άλλες 2. Γενικά η υλοποίηση με UDF θα έπρεπε και στους 2 πίνακες
+να έχει τον μεγαλύτερο χρόνο εκτέλεσης καθώς η UDF πρέπει να περάσει απο
+Python σε Scala ή Java για να τρέχει και αυτό προσθέτει επιπλέον χρόνο
+στην εκτέλεση.
+
+Παρόμοια αποτελέσματα
+βλέπουμε και τον πίνακα \ref{q1_results_all_csv} αλλά πλέον η πιο γρήγορη
+υλοποίηση είναι η DataFrame, with UDF και οχι η DataFrame, without UDF όπως
+πριν. Επίσης η υλοποίηση RDD έχει πλέον τον μικρότερο χρόνο εκτέλεσης σε σχέση
+με τις άλλες 2.
+
+Στη συνέχεια παρατηρούμε οτι οι υλοποιήσεις με .csv έχουν κατά πολύ μεγαλύτερο χρόνο
+εκτέλεσης σε σχέση με τις αντίστοιχες parquet. Η RDD υλοποίηση
+έχει χρόνο εκτέλεσης \approx 27 sec με το csv αλλά \approx 10 sec με την parquet.
+Αυτό συμβαίνει καθώς το format parquet ευνοεί κατανεμημένη εργασία ενω csv format οχι.
+Ακόμα μεγαλύτερες διαφορές παρατηρούμε στις υλοποιήσεις DataFrame, without UDF όπου
+παρουσιάζει χρόνος εκτέλεσης \approx 46 sec με .csv ενω μόνο \approx 4 sec με 
+.parquet, ομοίως για την υλοποίηση DataFrame, with UDF που έχει χρόνο
+εκτέλεσης \approx 31 sec με .csv ενω μόνο \approx 6 sec με .parquet. 
 
 
 

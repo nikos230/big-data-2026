@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2026.5.13)  25 MAY 2026 15:51
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2026.5.13)  8 JUN 2026 15:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -809,7 +809,80 @@ kern;+tnum;+lnum;mapping=tex-text;" at 14.4pt
 inusSerif-Regular.otf
  [1
 
-] (./main.toc)
+] (./main.toc
+Requested font "[LibertinusMath-Regular.otf]/OT:script=math;language=dflt;+ssty
+=0;" at 9.6pt
+ -> /usr/share/texlive/texmf-dist/fonts/opentype/public/libertinus-fonts/Libert
+inusMath-Regular.otf
+Requested font "[LibertinusMath-Regular.otf]/OT:script=math;language=dflt;+ssty
+=1;" at 7.2pt
+ -> /usr/share/texlive/texmf-dist/fonts/opentype/public/libertinus-fonts/Libert
+inusMath-Regular.otf
+Requested font "cmmi12" at 12.0pt
+ -> /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
+Requested font "cmmi9" at 9.6pt
+ -> /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi9.tfm
+Requested font "cmmi7" at 7.2pt
+ -> /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi7.tfm
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
+(Font)              scaled to size 12.00128pt on input line 4.
+Requested font "[LibertinusMath-Regular.otf]/OT:script=math;language=dflt;" at 
+12.00128pt
+ -> /usr/share/texlive/texmf-dist/fonts/opentype/public/libertinus-fonts/Libert
+inusMath-Regular.otf
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
+(Font)              scaled to size 9.60103pt on input line 4.
+Requested font "[LibertinusMath-Regular.otf]/OT:script=math;language=dflt;+ssty
+=0;" at 9.60103pt
+ -> /usr/share/texlive/texmf-dist/fonts/opentype/public/libertinus-fonts/Libert
+inusMath-Regular.otf
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(2)/m/n' will be
+(Font)              scaled to size 7.20076pt on input line 4.
+Requested font "[LibertinusMath-Regular.otf]/OT:script=math;language=dflt;+ssty
+=1;" at 7.20076pt
+ -> /usr/share/texlive/texmf-dist/fonts/opentype/public/libertinus-fonts/Libert
+inusMath-Regular.otf
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
+(Font)              scaled to size 11.99872pt on input line 4.
+Requested font "[LibertinusMath-Regular.otf]/OT:script=math;language=dflt;" at 
+11.99872pt
+ -> /usr/share/texlive/texmf-dist/fonts/opentype/public/libertinus-fonts/Libert
+inusMath-Regular.otf
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
+(Font)              scaled to size 9.59897pt on input line 4.
+Requested font "[LibertinusMath-Regular.otf]/OT:script=math;language=dflt;+ssty
+=0;" at 9.59897pt
+ -> /usr/share/texlive/texmf-dist/fonts/opentype/public/libertinus-fonts/Libert
+inusMath-Regular.otf
+LaTeX Font Info:    Font shape `TU/LibertinusMath-Regular.otf(3)/m/n' will be
+(Font)              scaled to size 7.19922pt on input line 4.
+Requested font "[LibertinusMath-Regular.otf]/OT:script=math;language=dflt;+ssty
+=1;" at 7.19922pt
+ -> /usr/share/texlive/texmf-dist/fonts/opentype/public/libertinus-fonts/Libert
+inusMath-Regular.otf
+LaTeX Font Info:    Trying to load font information for U+msa on input line 4.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+Requested font "msam10" at 12.0pt
+ -> /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
+Requested font "msam10" at 9.6pt
+ -> /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
+Requested font "msam7" at 7.2pt
+ -> /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm
+LaTeX Font Info:    Trying to load font information for U+msb on input line 4.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Requested font "msbm10" at 12.0pt
+ -> /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
+Requested font "msbm10" at 9.6pt
+ -> /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
+Requested font "msbm7" at 7.2pt
+ -> /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
+)
 \tf@toc=\write4
 \openout4 = `main.toc'.
 
@@ -820,21 +893,70 @@ Requested font "[LibertinusMono-Regular.otf]/OT:script=latn;language=dflt;exten
 d=0.9;+tnum; +lnum;" at 10.40002pt
  -> /usr/share/texlive/texmf-dist/fonts/opentype/public/libertinus-fonts/Libert
 inusMono-Regular.otf
- [2] [3] (./main.aux)
+ [2]
+LaTeX Font Info:    Font shape `TU/LibertinusSerif(0)/b/n' will be
+(Font)              scaled to size 14.4pt on input line 123.
+Requested font "[LibertinusSerif-Bold.otf]/OT:script=latn;language=dflt;+hv-ker
+n;+tnum;+lnum;mapping=tex-text;" at 14.4pt
+ -> /usr/share/texlive/texmf-dist/fonts/opentype/public/libertinus-fonts/Libert
+inusSerif-Bold.otf
+
+Overfull \hbox (54.02548pt too wide) in paragraph at lines 126--131
+\TU/LibertinusSerif(0)/m/n/12 θηκε σαν template. Φορτώνονται τα δεδομένα με την
+ μέθοδό \TU/LibertinusMono(0)/m/n/12 spark.read.parquet(args.crimes_path)
+ []
+
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2023/02/27 1.9 listings language file
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2023/02/27 1.9 listings language file
+)
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
+nput line 197.
+LaTeX Font Info:    Font shape `TU/LibertinusMono(0)/m/n' will be
+(Font)              scaled to size 9.49pt on input line 197.
+Requested font "[LibertinusMono-Regular.otf]/OT:script=latn;language=dflt;exten
+d=0.9;+tnum; +lnum;" at 9.49pt
+ -> /usr/share/texlive/texmf-dist/fonts/opentype/public/libertinus-fonts/Libert
+inusMono-Regular.otf
+LaTeX Font Info:    Font shape `TU/LibertinusMono(0)/b/n' will be
+(Font)              scaled to size 9.49pt on input line 210.
+Requested font "[LibertinusMono-Regular.otf]/OT:script=latn;language=dflt;exten
+d=0.9;+tnum; +lnum;embolden=3;" at 9.49pt
+ -> /usr/share/texlive/texmf-dist/fonts/opentype/public/libertinus-fonts/Libert
+inusMono-Regular.otf
+ [3]
+Overfull \hbox (37.74487pt too wide) in paragraph at lines 285--288
+[]\TU/LibertinusSerif(0)/m/n/12 Έπειτα ξεκινάμε το perf_counter και κάνουμε map
+ με την βοήθεια της συνάρτησης \TU/LibertinusMono(0)/m/n/12 get_day_part\TU/Lib
+ertinusSerif(0)/m/n/12 .
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[4] [5] [6] (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 07DBF0334247A07DF456B1F4147668E9;366.
+(rerunfilecheck)             Checksum: 94BEEACC8C53B41C719DBD7B751AEB8C;1204.
  ) 
 Here is how much of TeX's memory you used:
- 22203 strings out of 476846
- 418745 string characters out of 5803824
- 1926627 words of memory out of 5000000
- 43850 multiletter control sequences out of 15000+600000
- 559034 words of font info for 77 fonts, out of 8000000 for 9000
+ 22461 strings out of 476846
+ 423242 string characters out of 5803824
+ 2013627 words of memory out of 5000000
+ 44077 multiletter control sequences out of 15000+600000
+ 561888 words of font info for 97 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 120i,5n,151p,337b,391s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 120i,9n,151p,484b,1179s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (4 pages).
+Output written on main.pdf (7 pages).
