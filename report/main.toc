@@ -5,3 +5,9 @@
 \contentsline {subsection}{Ζητούμενο 2 (DataFrame, με UDF)}{3}{section*.9}%
 \contentsline {subsection}{Ζητούμενο 2 (RDD)}{4}{section*.11}%
 \contentsline {subsection}{Ζητούμενο 2 Αποτελέσματα}{4}{section*.13}%
+\contentsline {section}{Ζητούμενο 3}{6}{section*.19}%
+\contentsline {subsection}{Ζητούμενο 3 (με DataFrame)}{6}{section*.21}%
+\contentsline {subsection}{Ζητούμενο 3 (SQL)}{7}{section*.23}%
+\contentsline {subsection}{Ζητούμενο 3 Αποτελέσματα}{7}{section*.25}%
+\contentsline {section}{Ζητούμενο 4}{8}{section*.29}%
+\contentsline {subsection}{Ζητούμενο 4 (DataFrame)}{8}{section*.31}%
