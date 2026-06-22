@@ -1,12 +1,19 @@
 # Bigdata Semester Project 2026
+This repo contains the code and report for the Big Data semester project.
 
-## Transfer of scripts or data into server
+## How to run some Queries
+
+
+### Transfer of scripts or data into server
+This is an example of how to move a script or a file into the hdfs, VPN must be running in the backround.
 ```
 hdfs dfs -put -f /home/nikos/bigdata-dsml/code_nikos/Q1_DF_without_UDF.py /user
 /dsml00283/code_nikos/Q1_DF_without_UDF.py
 ```
 
-## Zitima 2
+### How to run Queries 1, 2 and 3
+To run each query youy must specify the minimum paths needed for each script. Below are some examples.
+
 Execution of Query 1 without UDF (parquet)
 ```
 spark-submit --conf spark.executor.instances=2 --conf spark.executor.cores=1 --conf spark.executor.memory=2g hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$DSML_USER/code_nikos/Q1_DF_without_UDF.py --crimes-path hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$DSML_USER/data_parquet/LA_Crime_Data_combined.parquet
@@ -50,4 +57,11 @@ spark-submit --conf spark.executor.instances=4 --conf spark.executor.cores=1 --c
 Execution of Query 3 DataFrame
 ```
 spark-submit --conf spark.executor.instances=3 --conf spark.executor.cores=1 --conf spark.executor.memory=2g hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$DSML_USER/code_nikos/Q3_DF.py --income-path hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$DSML_USER/data_parquet/LA_income_2021.parquet --census-path hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$DSML_USER/data/LA_Census_Blocks_2020.geojson
+```
+
+
+Execution of Query 3 RDD
+```
+spark-submit --conf spark.executor.instances=3 --conf spark.executor.cores=1 --conf spark.executor.memory=2g hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$DSML_USER/code_nikos/Q3_RDD.py --income-path hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$DSML_USER/data_parquet/LA_income_2021.parquet --census-path hdfs://hdfs-namenode.default.svc.cluster.local:9000/user/$DSML_USER/data/LA_Census_Blocks_2020.geojson
+
 ```
