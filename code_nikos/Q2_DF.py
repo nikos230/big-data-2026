@@ -94,9 +94,8 @@ def main() -> None:
 
     # final_result = top_three.select("year", "month", "crime_total", "ranking").orderBy(col("year").asc(), col("crime_total").desc(), col("ranking").asc())
     final_result = top_three.select("year", "month", "crime_total", "ranking").orderBy(col("year").asc(), col("crime_total").desc(), col("ranking").asc())
-
     final_result.show(truncate=False)
-
+    
     time_stop = perf_counter()    
     print(f"Time elapsed: {time_stop - time_start:.4f} seconds")
     

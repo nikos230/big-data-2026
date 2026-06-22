@@ -124,7 +124,9 @@ def main() -> None:
 
     # census_final = dataFrame_blocks_final.withColumnRenamed("ZCTA20", "ZipCode").withColumnRenamed("POP20", "Population")
     
-    dataFrame_joined = dataFrame_blocks_final.join(dataFrame_income.hint("shuffle_replicate_nl"), "ZipCode", "inner")
+    # dataFrame_joined = dataFrame_blocks_final.join(dataFrame_income.hint("shuffle_replicate_nl"), "ZipCode", "inner")
+    dataFrame_joined = dataFrame_blocks_final.join(dataFrame_income, "ZipCode", "inner")
+
 
     dataFrame_result = dataFrame_joined.groupBy("ZipCode").agg(
         F.sum("Population").alias("Total_Population"),

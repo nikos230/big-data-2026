@@ -64,11 +64,6 @@ def main():
     
     dataFrame = spark.read.parquet(args.crimes_path)
 
-    # dataFrame = spark.read.csv(
-    #                         args.crimes_path, 
-    #                         header=True, 
-    #                         inferSchema=True
-    #                     )
     street_crimes = dataFrame.filter(col("Premis Desc") == "STREET") 
 
     total_street_crimes = street_crimes.count()

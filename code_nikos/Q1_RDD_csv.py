@@ -8,7 +8,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, udf, count
 from pyspark.sql.types import IntegerType, StringType, StructField, StructType
 from time import perf_counter
-from pyspark.sql.functions import round as spark_round # kapoo thema dimiourghtai me auto kai to ebala etsi
+from pyspark.sql.functions import round as spark_round # kapoio thema dimiourghtai me auto kai to ebala etsi
 
 
 os.environ["PYSPARK_PYTHON"] = sys.executable

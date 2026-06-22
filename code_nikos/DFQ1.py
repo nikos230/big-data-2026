@@ -12,16 +12,6 @@ from pyspark.sql.types import IntegerType, StringType, StructField, StructType
 os.environ["PYSPARK_PYTHON"] = sys.executable
 os.environ["PYSPARK_DRIVER_PYTHON"] = sys.executable
 
-# Use an explicit schema so beginners can see the intended column types
-# and Spark does not have to guess them from the data.
-EMPLOYEES_SCHEMA = StructType(
-    [
-        StructField("id", IntegerType()),
-        StructField("name", StringType()),
-        StructField("salary", IntegerType()),
-        StructField("dep_id", IntegerType()),
-    ]
-)
 
 
 def build_path(base_path: str, relative_path: str) -> str:
