@@ -3,7 +3,7 @@ This repo contains the code and report for the Big Data semester project.
 
 
 ## How to run Queries 1, 2 and 3
-To run each query youy must specify the minimum paths needed for each script. Below are some examples.
+To run each query youy must specify the minimum paths needed for each script. Arguments like "--base-path", "--output" and "--master" are not needed for the script to run either locally nor in the cluster server. But arguments like "--crimes-path" which is in "Q1_DF_with_UDF.py" are needed, that means paths that are related to data. Below are some examples.
 
 Execution of Query 1 without UDF (parquet)
 ```
