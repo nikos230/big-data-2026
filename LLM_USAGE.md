@@ -9,6 +9,7 @@ I had installed Hadoop client and Spark in my main pc which has Ubuntu Linux 24.
 
 ## LLM Usage for Python Code
 Throughout the project I made use of Gemini Pro, details for each section are listed below. The main usage of LLM was for documenatation, error solving and making sure the queries I write solve the right problem.
+Also I used LLM for the conversion scripts from csv to parquet file formats, mainly for how to do it and also used LLM for the plots in Zitima 5, also on how to do them.
 
 | Zitima  | LLM Usage                                                                             |
 | ------- | ------------------------------------------------------------------------------------- |
