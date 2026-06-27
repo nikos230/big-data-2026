@@ -1,17 +1,8 @@
 # Bigdata Semester Project 2026
 This repo contains the code and report for the Big Data semester project.
 
-## How to run some Queries
 
-
-### Transfer of scripts or data into server
-This is an example of how to move a script or a file into the hdfs, VPN must be running in the backround.
-```
-hdfs dfs -put -f /home/nikos/bigdata-dsml/code_nikos/Q1_DF_without_UDF.py /user
-/dsml00283/code_nikos/Q1_DF_without_UDF.py
-```
-
-### How to run Queries 1, 2 and 3
+## How to run Queries 1, 2 and 3
 To run each query youy must specify the minimum paths needed for each script. Below are some examples.
 
 Execution of Query 1 without UDF (parquet)
